@@ -6,11 +6,11 @@ GET http://localhost:3001/api/persons
 
 ###
 
-DELETE http://localhost:3001/api/persons/2
+DELETE http://localhost:3001/api/persons/6a07ba1d438e4d9b
 
 ###
 
-POST http://localhost:3001/api/persons HTTP/1.1
+POST http://localhost:3001/api/persons
 content-type: application/json
 
 {
