@@ -11,7 +11,7 @@ morgan.token('content', function postContent(res) {
 
 app.use(express.json())
 app.use(morgan(':method :url :status :response-time :content', {
-    skip: function (req, res) { return req.method !== "POST" }
+    skip: function (req) { return req.method !== 'POST' }
 }))
 app.use(express.static('build'))
 
@@ -33,15 +33,15 @@ app.get('/api/persons/:id', (request, response, next) => {
             response.status(404).end()
         }
     })
-    .catch (error => next(error))
+        .catch (error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
     Person.findByIdAndRemove(request.params.id)
-    .then(result => {
-        response.status(204).end()
-    })
-    .catch(error => next(error))
+        .then(() => {
+            response.status(204).end()
+        })
+        .catch(error => next(error))
 })
 
 app.post('/api/persons', (req, res, next) => {
@@ -57,10 +57,10 @@ app.post('/api/persons', (req, res, next) => {
     })
 
     person.save()
-    .then(savedPerson => {
-        res.json(savedPerson)
-    })
-    .catch(error => next(error))
+        .then(savedPerson => {
+            res.json(savedPerson)
+        })
+        .catch(error => next(error))
 })
 
 app.get('/info', async (request, response) => {
@@ -83,8 +83,8 @@ app.put('/api/persons/:id', (req, res, next) => {
         { name, number },
         { new: true, runValidators: true, context: 'query'}
     )
-    .then(updatedPerson => res.json(updatedPerson))
-    .catch(error => next(error))
+        .then(updatedPerson => res.json(updatedPerson))
+        .catch(error => next(error))
 
 })
 
@@ -92,7 +92,7 @@ const errorHandler = (error, request, response, next) => {
     console.error(error.message)
   
     if (error.name === 'CastError') {
-      return response.status(400).send({ error: 'malformatted id' })
+        return response.status(400).send({ error: 'malformatted id' })
     } else if (error.name === 'ValidationError') {
         return response.status(400).json({ error: error.message})
     }
@@ -103,6 +103,6 @@ const errorHandler = (error, request, response, next) => {
 app.use(errorHandler)
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+    console.log(`Server running on port ${PORT}`)
 })
 

@@ -19,7 +19,7 @@ const personSchema = new mongoose.Schema({
     number: String
 })
 
-const Person = mongoose.model("Person", personSchema)
+const Person = mongoose.model('Person', personSchema)
 
 const person = new Person({
     name: name,
@@ -27,14 +27,14 @@ const person = new Person({
 })
 
 if (process.argv.length === 3) {
-    console.log("Phonebook")
+    console.log('Phonebook')
     Person.find().then(result => {
         result.forEach(person => {
             console.log(`${person.name} ${person.number}`)
         })
     }).then(() => mongoose.connection.close())
 } else if (process.argv.length === 5) {
-    person.save().then(result => {
+    person.save().then(() => {
         console.log(`added ${name} number ${number} to phonebook`)
     }).then(() => mongoose.connection.close())
 }
