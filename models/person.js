@@ -12,13 +12,36 @@ mongoose.connect(url)
     console.log('error connecting to MongoDB:', error.message)
   })
 
+function checkPhoneNumber(number) {
+  splitNumber = number.split('-')
+
+  if (splitNumber.length != 2 || splitNumber[0].length < 2 || splitNumber[0].length > 3 || /^\d+$/.test(splitNumber[0]) || /^\d+$/.test(splitNumber[1])) {
+      return false
+  }
+
+  return true
+}
+
 const personSchema = new mongoose.Schema({
     name: {
       type: String,
       minLength: 3,
       required: true
     },  
-    number: String
+    number: {
+      type: String,
+      minLength: 9,
+      validate: {
+        validator: function(v) {
+          splitNumber = v.split('-')
+          console.log(splitNumber)
+          if (splitNumber.length != 2 || splitNumber[0].length < 2 || splitNumber[0].length > 3 || !/^\d+$/.test(splitNumber[0]) || !/^\d+$/.test(splitNumber[1])) {
+              return false
+          }
+          return true
+        }
+      }
+    }
 })
 
 personSchema.set('toJSON', {

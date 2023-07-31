@@ -5,7 +5,6 @@ const app = express()
 const Person = require('./models/person')
 const PORT = process.env.PORT
 
-
 morgan.token('content', function postContent(res) {
     return JSON.stringify(res.body)
 })
@@ -41,7 +40,8 @@ app.delete('/api/persons/:id', (request, response, next) => {
     Person.findByIdAndRemove(request.params.id)
     .then(result => {
         response.status(204).end()
-    }).catch(error => next(error))
+    })
+    .catch(error => next(error))
 })
 
 app.post('/api/persons', (req, res, next) => {
@@ -56,7 +56,8 @@ app.post('/api/persons', (req, res, next) => {
         number: body.number
     })
 
-    person.save().then(savedPerson => {
+    person.save()
+    .then(savedPerson => {
         res.json(savedPerson)
     })
     .catch(error => next(error))
@@ -79,9 +80,9 @@ app.put('/api/persons/:id', (req, res, next) => {
 
     Person.findByIdAndUpdate(
         req.params.id, 
-        {name, number},
+        { name, number },
         { new: true, runValidators: true, context: 'query'}
-        )
+    )
     .then(updatedPerson => res.json(updatedPerson))
     .catch(error => next(error))
 
